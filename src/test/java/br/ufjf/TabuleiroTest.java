@@ -26,7 +26,7 @@ public class TabuleiroTest {
     }
 
     @Test
-    void deveRetornarTabuleiroComEscolha(){
+    void deveRetornarTabuleiroComEscolhaX(){
 
         String[][] tabEsperado = {
                 {"_", "X", "_"},
@@ -36,5 +36,18 @@ public class TabuleiroTest {
         tabuleiro.setTabuleiro(0,1,"X");
         assertArrayEquals(tabEsperado, tabuleiro.getTabuleiro());
     }
+
+    @Test
+    void deveRetornarTabuleiroComEscolhaO(){
+
+        String[][] tabEsperado = {
+                {"_", "O", "_"},
+                {"_", "_", "_"},
+                {"_", "_", "_"}
+        };
+        tabuleiro.setTabuleiro(0,1,"O");
+        assertArrayEquals(tabEsperado, tabuleiro.getTabuleiro());
+    }
+
 
 }

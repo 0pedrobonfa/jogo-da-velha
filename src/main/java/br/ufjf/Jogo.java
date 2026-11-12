@@ -1,12 +1,11 @@
 package br.ufjf;
 
-import java.util.Scanner;
-
 public class Jogo {
 
 
     private Tabuleiro tab = new Tabuleiro();
-    private String p1_caractere;
+    private String player_caractere;
+    private String estadoJogo;
 
 
     public String[][] getTabJogo(){
@@ -15,17 +14,15 @@ public class Jogo {
 
     public void setCaractereJogador(String caractere){
         if(caractere.equals("X") || caractere.equals("O")){
-            this.p1_caractere = caractere;
+            this.player_caractere = caractere;
         }
         else{
-            throw new IllegalArgumentException(
-                    String.format("Caractere inválido.")
-            );
+            throw new IllegalArgumentException("Caractere Invalido");
         }
     }
 
     public String getCaractereJogador(){
-        return this.p1_caractere;
+        return this.player_caractere;
     }
 
     public void iniciaJogo(){
@@ -33,25 +30,46 @@ public class Jogo {
     }
 
     // Converte a string e manda para setTabuleiro
-    public void fazJogada(String jogada){
+    public String fazJogada(String jogada) {
 
-        // retira espaços antes e depois da entrada
-        jogada = jogada.strip();
-        // retira todos os espaços
-        String jogadaRefinada = jogada.replaceAll("\\s+","");
+        // Remove parênteses e espaços: "( -1 , 1 , X )" vira "-1,1,X"
+        String limpa = jogada.replace("(", "").replace(")",
+                "").replaceAll("\\s+", "");
+        String[] partes = limpa.split(",");
 
-        // aqui a estrutura SEMPRE será (i,j,X|O)
-        char x = jogadaRefinada.charAt(1); // pega jogadaRefinada[1]
-        char y = jogadaRefinada.charAt(3); // pega jogadaRefinada[3]
-        char c = jogadaRefinada.charAt(5); // pega jogadaRefinada[5]
+        int i = Integer.parseInt(partes[0]);
+        int j = Integer.parseInt(partes[1]);
+        String valor = partes[2];
+
+        if (!tab.posicaoValida(i, j)) {
+            return "Essa coordenada não existe.";
+        }
+        if (!tab.estaLivre(i, j)) {
+            return "Posição já ocupada.";
+        }
+
+        tab.setTabuleiro(i, j, valor);
+        return "Jogada realizada";
+    }
+
+    public void setEstadoJogo(String c){
+        this.estadoJogo = c;
+    }
+
+    public String getEstadoJogo(){
+        return this.estadoJogo;
+    }
 
 
-        int i = Character.getNumericValue(x);
-        int j = Character.getNumericValue(y);
-        String valor = String.valueOf(c);
-
-        tab.setTabuleiro(i,j,valor);
-
+    public void verificaEstadojogo() {
+        String vencedor = tab.checaVencedor();
+        if (vencedor != null) {
+            setEstadoJogo("VITORIA " + vencedor);
+        } else if (tab.estaCheio()) {
+            setEstadoJogo("EMPATE");
+        } else {
+            setEstadoJogo("EM_ANDAMENTO");
+        }
     }
 
 
