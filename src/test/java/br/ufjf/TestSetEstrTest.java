@@ -50,7 +50,7 @@ public class TestSetEstrTest {
     void estr04_deveCobrirCondicaoParcialEmSaoIguais() {
         jogo.fazJogada("(0,0,X)");
         jogo.fazJogada("(0,1,X)");
-        jogo.fazJogada("(0,2,O)"); // Quebra a trinca no terceiro elemento
+        jogo.fazJogada("(0,2,O)");
         jogo.verificaEstadojogo();
         assertEquals("EM_ANDAMENTO", jogo.getEstadoJogo());
     }
